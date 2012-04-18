@@ -9,7 +9,8 @@ end
 
 
 unless node[:shorewall][:new_rules].nil?
-  node[:shorewall][:new_rules].each do |name,rule|
+  val=node[:shorewall][:new_rules].to_hash
+  val.each do |name,rule|
     template "/etc/shorewall/rules-enabled-custom/#{name}.chef.rule" do
       variables(
           :name => name,
@@ -27,7 +28,8 @@ execute "cleanup_enabled" do
 end
 
 unless node[:shorewall][:enabled_rules].nil?
-  node[:shorewall][:enabled_rules].each do |pk,name|
+  val=node[:shorewall][:enabled_rules].to_hash
+  val.each do |pk,name|
     link "/etc/shorewall/rules-enabled/#{name}.chef.rule" do
       to "/etc/shorewall/rules-available/#{name}.rule"
     end
